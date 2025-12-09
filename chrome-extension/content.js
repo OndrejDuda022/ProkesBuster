@@ -1,6 +1,10 @@
 // Hlavní content script pro Google Forms Auto-fill
 let questionsDatabase = [];
-let config = { similarityThreshold: 90, showNoMatchIndicator: true };
+let config = { 
+  similarityThreshold: 50, 
+  questionSimilarityThreshold: 80, 
+  showNoMatchIndicator: true 
+};
 let isActive = false;
 let lastMouseX = window.innerWidth / 2;
 let lastMouseY = window.innerHeight / 2;
@@ -20,7 +24,11 @@ async function loadConfig() {
   } catch (error) {
     console.error('Chyba při načítání konfigurace:', error);
     // Použít výchozí hodnoty
-    config = { similarityThreshold: 90, showNoMatchIndicator: true };
+    config = { 
+      similarityThreshold: 50, 
+      questionSimilarityThreshold: 80, 
+      showNoMatchIndicator: true 
+    };
   }
 }
 
@@ -73,10 +81,53 @@ function normalizeText(text) {
     .trim();
 }
 
-// Extrakce čísla z textu
-function extractNumber(text) {
-  const match = text.match(/\d+/);
-  return match ? parseInt(match[0]) : null;
+// Extrakce všech čísel z textu
+function extractNumbers(text) {
+  const matches = text.match(/\d+/g);
+  return matches ? matches.map(n => parseInt(n)) : [];
+}
+
+// Extrakce IP adres a ostatních čísel
+function extractIPAddressesAndNumbers(text) {
+  const result = {
+    ipAddresses: [],
+    otherNumbers: []
+  };
+  
+  // Regex pro IPv4 adresy (podporuje i zkrácené notace jako 10.0.0 nebo 192.168.1)
+  const ipv4Regex = /\b(\d{1,3})\.(\d{1,3})\.(\d{1,3})(?:\.(\d{1,3}))?\b/g;
+  
+  // Najít všechny IP adresy a normalizovat je na 4 oktety
+  let match;
+  const ipPositions = [];
+  while ((match = ipv4Regex.exec(text)) !== null) {
+    const octets = [
+      parseInt(match[1]),
+      parseInt(match[2]),
+      parseInt(match[3]),
+      match[4] ? parseInt(match[4]) : 0  // Pokud chybí 4. oktet, doplnit 0
+    ];
+    result.ipAddresses.push(octets);
+    ipPositions.push({ start: match.index, end: match.index + match[0].length });
+  }
+  
+  // Najít všechna ostatní čísla (která nejsou součástí IP adres)
+  const allNumberMatches = text.matchAll(/\d+/g);
+  for (const numMatch of allNumberMatches) {
+    const numStart = numMatch.index;
+    const numEnd = numStart + numMatch[0].length;
+    
+    // Zkontrolovat, zda toto číslo není součástí IP adresy
+    const isPartOfIP = ipPositions.some(ip => 
+      numStart >= ip.start && numEnd <= ip.end
+    );
+    
+    if (!isPartOfIP) {
+      result.otherNumbers.push(parseInt(numMatch[0]));
+    }
+  }
+  
+  return result;
 }
 
 // Výpočet podobnosti dvou textů (Levenshtein distance)
@@ -121,22 +172,63 @@ function calculateSimilarity(str1, str2) {
   return ((maxLen - distance) / maxLen) * 100;
 }
 
-// Porovnání odpovědí se zaměřením na čísla
+// Porovnání odpovědí se zaměřením na čísla a IP adresy
 function compareAnswers(answer1, answer2) {
-  const num1 = extractNumber(answer1);
-  const num2 = extractNumber(answer2);
+  const data1 = extractIPAddressesAndNumbers(answer1);
+  const data2 = extractIPAddressesAndNumbers(answer2);
   
-  // Pokud obě odpovědi obsahují čísla, musí být přesně stejná
-  if (num1 !== null && num2 !== null) {
-    if (num1 !== num2) return 0;
+  console.log(`  DEBUG: IP adresy v odpovědi 1: ${JSON.stringify(data1.ipAddresses)}`);
+  console.log(`  DEBUG: IP adresy v odpovědi 2: ${JSON.stringify(data2.ipAddresses)}`);
+  console.log(`  DEBUG: Ostatní čísla v odpovědi 1: [${data1.otherNumbers.join(', ')}]`);
+  console.log(`  DEBUG: Ostatní čísla v odpovědi 2: [${data2.otherNumbers.join(', ')}]`);
+  
+  // Porovnat IP adresy
+  if (data1.ipAddresses.length > 0 || data2.ipAddresses.length > 0) {
+    if (data1.ipAddresses.length !== data2.ipAddresses.length) {
+      console.log(`  DEBUG: Různý počet IP adres (${data1.ipAddresses.length} vs ${data2.ipAddresses.length}) → 0%`);
+      return 0;
+    }
+    
+    for (let i = 0; i < data1.ipAddresses.length; i++) {
+      const ip1 = data1.ipAddresses[i];
+      const ip2 = data2.ipAddresses[i];
+      
+      for (let j = 0; j < 4; j++) {
+        if (ip1[j] !== ip2[j]) {
+          console.log(`  DEBUG: IP adresy se liší na pozici ${i}, oktet ${j} (${ip1.join('.')} vs ${ip2.join('.')}) → 0%`);
+          return 0;
+        }
+      }
+    }
+    
+    console.log(`  DEBUG: Všechny IP adresy se shodují ✓`);
   }
   
-  // Porovnání slov
+  // Porovnat ostatní čísla
+  if (data1.otherNumbers.length > 0 || data2.otherNumbers.length > 0) {
+    if (data1.otherNumbers.length !== data2.otherNumbers.length) {
+      console.log(`  DEBUG: Různý počet ostatních čísel (${data1.otherNumbers.length} vs ${data2.otherNumbers.length}) → 0%`);
+      return 0;
+    }
+    
+    for (let i = 0; i < data1.otherNumbers.length; i++) {
+      if (data1.otherNumbers[i] !== data2.otherNumbers[i]) {
+        console.log(`  DEBUG: Ostatní čísla se liší na pozici ${i} (${data1.otherNumbers[i]} vs ${data2.otherNumbers[i]}) → 0%`);
+        return 0;
+      }
+    }
+    
+    console.log(`  DEBUG: Všechna ostatní čísla se shodují ✓`);
+  }
+  
+  // Porovnání slov (bez čísel a IP adres)
   const words1 = normalizeText(answer1).split(' ').filter(w => !w.match(/^\d+$/));
   const words2 = normalizeText(answer2).split(' ').filter(w => !w.match(/^\d+$/));
   
-  // Pokud jsou čísla stejná a slova taky, je to perfektní shoda
-  if (num1 === num2 && words1.join(' ') === words2.join(' ')) {
+  // Pokud jsou IP/čísla stejná a slova taky, je to perfektní shoda
+  if (data1.ipAddresses.length === data2.ipAddresses.length && 
+      data1.otherNumbers.length === data2.otherNumbers.length &&
+      words1.join(' ') === words2.join(' ')) {
     return 100;
   }
   
@@ -170,17 +262,48 @@ function getAnswerOptions(element) {
   if (!mightBeGrid) {
     // Standardní radio buttons
     radioOptions.forEach(option => {
-      const label = option.querySelector('.aDTYNe') || 
-                   option.querySelector('span') ||
-                   option.querySelector('[class*="export"]');
-      if (label) {
-        const text = label.textContent.trim();
+      // Zkusit různé způsoby získání textu
+      let text = null;
+      
+      // Způsob 1: aria-label
+      text = option.getAttribute('aria-label');
+      
+      // Způsob 2: textContent child elementů
+      if (!text) {
+        const label = option.querySelector('.aDTYNe') || 
+                     option.querySelector('span') ||
+                     option.querySelector('[class*="export"]') ||
+                     option.querySelector('[data-value]');
+        if (label) text = label.textContent.trim();
+      }
+      
+      // Způsob 3: textContent celého radio buttonu
+      if (!text && option.textContent.trim()) {
+        text = option.textContent.trim();
+      }
+      
+      // Způsob 4: následující sourozenec (label)
+      if (!text) {
+        const nextLabel = option.nextElementSibling;
+        if (nextLabel) text = nextLabel.textContent.trim();
+      }
+      
+      // Způsob 5: parent container
+      if (!text) {
+        const container = option.closest('.docssharedWizToggleLabeledContainer') ||
+                         option.closest('label');
+        if (container) text = container.textContent.trim();
+      }
+      
+      if (text && text.length > 0) {
         console.log('  Radio odpověď:', text);
         answers.push({
           element: option,
           text: text,
           type: 'radio'
         });
+      } else {
+        console.log('  Radio button bez textu (skipped):', option);
       }
     });
   }
@@ -189,11 +312,32 @@ function getAnswerOptions(element) {
   const checkboxOptions = element.querySelectorAll('[role="checkbox"]');
   console.log('Nalezeno checkbox options:', checkboxOptions.length);
   checkboxOptions.forEach(option => {
-    const label = option.querySelector('.aDTYNe') || 
-                 option.querySelector('span') ||
-                 option.querySelector('[class*="export"]');
-    if (label) {
-      const text = label.textContent.trim();
+    // Zkusit různé způsoby získání textu
+    let text = null;
+    
+    // Způsob 1: aria-label (bez "odpověď pro řádek" části pro non-grid)
+    const ariaLabel = option.getAttribute('aria-label');
+    if (ariaLabel && !ariaLabel.includes('odpověď pro řádek')) {
+      text = ariaLabel;
+    }
+    
+    // Způsob 2: textContent child elementů
+    if (!text) {
+      const label = option.querySelector('.aDTYNe') || 
+                   option.querySelector('span') ||
+                   option.querySelector('[class*="export"]') ||
+                   option.querySelector('[data-value]');
+      if (label) text = label.textContent.trim();
+    }
+    
+    // Způsob 3: parent container
+    if (!text) {
+      const container = option.closest('.docssharedWizToggleLabeledContainer') ||
+                       option.closest('label');
+      if (container) text = container.textContent.trim();
+    }
+    
+    if (text && text.length > 0) {
       console.log('  Checkbox odpověď:', text);
       answers.push({
         element: option,
@@ -410,20 +554,24 @@ function processQuestion(questionElement) {
   
   console.log('Otázka:', questionText);
   
-  // Najít shodu v databázi
+  // Najít shodu v databázi - DŮLEŽITÉ: prohledat VŠECHNY a vybrat nejlepší
   let bestMatch = null;
   let bestSimilarity = 0;
   
   for (const dbQuestion of questionsDatabase) {
     const similarity = calculateSimilarity(questionText, dbQuestion.question);
-    if (similarity >= config.similarityThreshold && similarity > bestSimilarity) {
+    console.log(`  Porovnání s DB: "${dbQuestion.question.substring(0, 50)}..." - ${similarity.toFixed(1)}%`);
+    
+    // Vybrat tu s nejvyšší podobností (ne první, která překročí threshold!)
+    if (similarity > bestSimilarity) {
       bestMatch = dbQuestion;
       bestSimilarity = similarity;
     }
   }
   
-  if (!bestMatch) {
-    console.log(`Nebyla nalezena shoda v databázi (min. ${config.similarityThreshold}%)`);
+  // Ověřit threshold až po výběru nejlepší
+  if (!bestMatch || bestSimilarity < config.questionSimilarityThreshold) {
+    console.log(`Nebyla nalezena shoda v databázi (nejlepší: ${bestSimilarity.toFixed(1)}%, min. ${config.questionSimilarityThreshold}%)`);
     showNoMatchIndicator();
     return;
   }
@@ -525,8 +673,8 @@ function processQuestion(questionElement) {
       }
     }
     
-    // Použít threshold (z config)
-    if (bestAnswerMatch && bestAnswerSimilarity >= config.questionSimilarityThreshold) {
+    // Použít threshold pro odpovědi (nižší než pro otázky)
+    if (bestAnswerMatch && bestAnswerSimilarity >= config.similarityThreshold) {
       console.log(`Nalezena odpověď: ${bestAnswerMatch.text} (${bestAnswerSimilarity.toFixed(1)}%)`);
       matchedAnswers.push(bestAnswerMatch);
     }
