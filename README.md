@@ -24,7 +24,7 @@ Chrome rozšíření pro automatické vyplňování Google formulářů s inteli
 ### 📝 Podporované typy otázek
 - **Radio buttons** (jedna odpověď) - zvýraznění tučným písmem (font-weight: 900)
 - **Checkboxes** (více odpovědí) - zvýraznění tučným písmem
-- **Dropdown** - žlutý obrys 2px + tučné písmo
+- **Dropdown** - tučné písmo
 - **Grid/Mřížka** (radio) - černý obrys 1px na správných buňkách
 - **Grid/Mřížka** (checkbox) - černý obrys 1px, podporuje více odpovědí na řádek
 

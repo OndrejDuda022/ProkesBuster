@@ -701,9 +701,8 @@ function highlightAnswer(answerElement, answerType = 'radio') {
     // Najít select element a zvýraznit ho tež
     const selectElement = answerElement.closest('select') || answerElement.parentElement;
     if (selectElement && selectElement.tagName === 'SELECT') {
-      // Viditelné zvýraznění select boxu
+      // Pouze tučné písmo pro select box
       selectElement.style.fontWeight = '900';
-      selectElement.style.outline = '2px solid #ffc107';
       selectElement.classList.add('auto-fill-highlight');
       
       console.log('Dropdown select box zvýrazněn');
@@ -711,7 +710,6 @@ function highlightAnswer(answerElement, answerType = 'radio') {
       // Odstranit po 1 sekundě
       setTimeout(() => {
         selectElement.style.fontWeight = '';
-        selectElement.style.outline = '';
         selectElement.classList.remove('auto-fill-highlight');
         answerElement.style.fontWeight = '';
         console.log('Dropdown zvýraznění odstraněno');
