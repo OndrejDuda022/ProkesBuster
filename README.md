@@ -1,73 +1,110 @@
-# ProkesBuster - Google Forms Auto-fill Extension
+# ProkesBuster - Google Forms Hint Extension
 
 Chrome rozšíření pro automatické vyplňování Google formulářů s inteligentním porovnáváním otázek a odpovědí.
 
+## ⚙️ Aktuální nastavení
+
+- **Práh pro otázky**: 70% (upravitelné klávesou P)
+- **Práh pro odpovědi**: 60% (upravitelné klávesou P)
+- **Počet otázek v databázi**: 78
+- **Velikost kódu**: ~979 řádků (content.js), ~117 řádků (styles.css)
+
 ## Funkce
 
+### 🎯 Detekce a porovnávání
 - **Detekce pod kurzorem**: Při stisku klávesy **I** rozšíření analyzuje otázku pod kurzorem myši
-- **Inteligentní porovnání**: Porovnává text otázky s databází (threshold 80%)
-- **Normalizace textu**: Odstraňuje diakritiku a interpunkci pro lepší rozpoznávání
-- **Přesná čísla**: Čísla v odpovědích musí být přesně stejná
-- **Podobnost slov**: Slova se porovnávají s tolerancí pomocí Levenshteinovy vzdálenosti
-- **Podpora více typů otázek**:
-  - **Radio buttons** (jedna správná odpověď) - tučné písmo
-  - **Checkboxes** (více správných odpovědí) - tučné písmo
-  - **Rozbalovací nabídka** (dropdown) - tučné písmo
-  - **Mřížkové otázky** (grid) - černé ohraničení 1px
-    - Radio buttony (1 odpověď na řádek)
-    - Checkboxy (více odpovědí na řádek)
-- **No-match indikátor**: Malý červený vykřičník (20px) uprostřed dole při nenalezení shody (konfigurovatelné)
-- **Automatické zmizení**: Všechna zvýraznění zmizí po 1 sekundě
-- **Ruční zrušení**: Klávesa **O** okamžitě zruší všechna zvýraznění
-- **Konfigurovatelný práh**: Nastavitelné procento podobnosti v `config.json`
+- **Inteligentní algoritmus**: Prohledá VŠECHNY otázky v databázi a vybere tu s nejvyšší podobností
+- **Dva prahy podobnosti**: 
+  - 70% pro otázky (přesná detekce)
+  - 60% pro odpovědi (tolerantnější pro překlady)
+- **Normalizace textu**: Automatické odstranění diakritiky a interpunkce (NFD normalizace)
+- **IP adresy**: Inteligentní detekce IPv4 s normalizací (10.0.0 = 10.0.0.0)
+- **Přesná čísla**: Všechna čísla musí být identická včetně pořadí
 
-## Instalace
+### 📝 Podporované typy otázek
+- **Radio buttons** (jedna odpověď) - zvýraznění tučným písmem (font-weight: 900)
+- **Checkboxes** (více odpovědí) - zvýraznění tučným písmem
+- **Dropdown** - žlutý obrys 2px + tučné písmo
+- **Grid/Mřížka** (radio) - černý obrys 1px na správných buňkách
+- **Grid/Mřížka** (checkbox) - černý obrys 1px, podporuje více odpovědí na řádek
+
+### 🎨 Vizuální feedback
+- **Automatické zmizení**: Všechna zvýraznění zmizí po 1 sekundě
+- **Animace**: Jemný pulse efekt při zvýraznění (scale 1.01)
+- **No-match indikátor**: Červený kroužek s vykřičníkem (35px) uprostřed dole
+
+### ⌨️ Klávesové zkratky
+- **I** - Analyzovat otázku pod kurzorem
+- **O** - Okamžitě zrušit všechna zvýraznění
+- **P** - Zobrazit/skrýt nastavovací panel
+  - Změna prahů v reálném čase
+  - Nenápadný panel v pravém dolním rohu
+  - Změny platí okamžitě bez restartu
+
+## 📦 Instalace
 
 1. Otevřete Chrome a přejděte na `chrome://extensions/`
 2. Zapněte **"Režim pro vývojáře"** (Developer mode) v pravém horním rohu
 3. Klikněte na **"Načíst rozbalené rozšíření"** (Load unpacked)
 4. Vyberte složku `chrome-extension` z tohoto projektu
+5. Rozšíření "PowerMove" se objeví v seznamu (interní název)
 
-## Použití
+## 🚀 Použití
 
 ### Základní workflow:
 1. Otevřete Google formulář (https://docs.google.com/forms/)
 2. **Najeďte myší na otázku**, kterou chcete zkontrolovat
-3. Stiskněte **klávesu I** - rozšíření:
-   - Detekuje otázku pod kurzorem
-   - Najde shodu v databázi (pokud existuje s ≥80% podobností)
-   - Zvýrazní správnou odpověď/odpovědi
-4. (Volitelně) Stiskněte **klávesu O** pro okamžité zrušení zvýraznění
+3. Stiskněte **klávesu I**:
+   - Rozšíření detekuje otázku pod kurzorem
+   - Prohledá všech 78 otázek v databázi
+   - Najde otázku s nejvyšší podobností
+   - Pokud shoda ≥70%, porovná odpovědi
+   - Zvýrazní odpovědi s podobností ≥60%
+4. Zvýraznění **zmizí automaticky po 1 sekundě**
+5. Pro ruční zrušení stiskněte **klávesu O**
 
-> **Poznámka:** Klávesy se deaktivují ve vstupních polích (input/textarea)
+### Nastavení prahů (klávesa P):
+- Stiskněte **P** → objeví se panel v pravém dolním rohu
+- Upravte hodnoty:
+  - **Otázky**: 0-100% (výchozí 70%)
+  - **Odpovědi**: 0-100% (výchozí 60%)
+- Změny platí okamžitě
+- Panel skryjete opět klávesou **P**
 
-## Konfigurace
+> **💡 Tip**: Nižší práh = více shod (ale možné false positives). Vyšší práh = přesnější (ale možné false negatives).
 
-Rozšíření používá konfigurační soubor `chrome-extension/config.json`:
+## ⚙️ Konfigurace
+
+Soubor `chrome-extension/config.json`:
 
 ```json
 {
-  "similarityThreshold": 80,
+  "similarityThreshold": 60,
+  "questionSimilarityThreshold": 70,
   "showNoMatchIndicator": true
 }
 ```
 
 ### Parametry:
-- **similarityThreshold** (výchozí: 80)
-  - Minimální procentuální shoda pro otázky
+- **questionSimilarityThreshold** (aktuálně: 70)
+  - Minimální shoda pro **otázky**
   - Rozsah: 0-100
-  - Nižší hodnota = více false positives
-  - Vyšší hodnota = více false negatives
+  - Lze měnit klávesou **P**
 
-- **questionSimilarityTreshold** (to samé pro odpovědi)
+- **similarityThreshold** (aktuálně: 60)
+  - Minimální shoda pro **odpovědi**
+  - Rozsah: 0-100
+  - Lze měnit klávesou **P**
   
-- **showNoMatchIndicator** (výchozí: true)
-  - Zobrazit červený vykřičník při nenalezení shody
-  - `true` = zobrazit, `false` = skrýt
+- **showNoMatchIndicator** (aktuálně: true)
+  - Zobrazit červený kroužek při nenalezení shody
+  - `true` / `false`
 
-## Databáze otázek
+> **Proč dva prahy?** Otázky jsou stabilní, odpovědi mohou být přeložené nebo lehce upravené. Oddělené prahy = přesná detekce + tolerantní porovnání.
 
-Otázky a správné odpovědi jsou uloženy v `chrome-extension/questions-db.json`.
+## 📚 Databáze otázek
+
+Soubor `chrome-extension/questions-db.json` obsahuje **78 otázek** různých typů.
 
 ### Podporované formáty:
 
@@ -125,30 +162,70 @@ Otázky a správné odpovědi jsou uloženy v `chrome-extension/questions-db.jso
 - **Algoritmus**: Levenshteinova vzdálenost pro fuzzy text matching
 - **DOM Selektory**: Používá ARIA role attributes (`role="radio"`, `role="heading"`, atd.)
 - **Text normalizace**: Unicode NFD normalizace + regex cleanup
+- **IP normalizace**: Regex detekce IPv4 adres s automatickou normalizací na 4 oktety
+- **Čísla**: Extrahuje všechna čísla jako sekvence, IP adresy zpracovává zvlášť
 - **Mouse tracking**: Global `mousemove` listener ukládá `lastMouseX`/`lastMouseY`
+- **Best match**: Prohledá celou databázi a vybere otázku s nejvyšší podobností (ne první nad prahem)
+- **Fallback detekce**: 5 metod pro detekci textu odpovědí:
+  1. `aria-label` atribut
+  2. Child elements (`span.aDTYNe`, `div.bzfPab`)
+  3. `textContent` celého elementu
+  4. `nextSibling` label element
+  5. Parent container průchod
 ## Struktura projektu
 
 ```
 ProkesBuster/
 ├── chrome-extension/
 │   ├── manifest.json       # Chrome extension config (Manifest V3)
-│   ├── content.js          # Hlavní logika (~780 řádků)
-│   ├── styles.css          # CSS styly pro zvýraznění
-│   ├── config.json         # Konfigurace (threshold, indicators)
-│   └── questions-db.json   # Databáze otázek a odpovědí
+│   ├── content.js          # Hlavní logika (~990 řádků)
+│   ├── styles.css          # CSS styly pro zvýraznění + nastavovací panel
+│   ├── config.json         # Konfigurace (thresholdy, indicators)
+│   └── questions-db.json   # Databáze otázek a odpovědí (~80 otázek)
 └── README.md               # Tato dokumentace
 ```
 
 ## Vývoj a ladění
 
-### Debug mode:
-- Otevřete DevTools (F12) → Console
-- Všechny operace logují do konzole:
-  - `Hledám otázku pod kurzorem...`
-  - `Otázka: <text>`
-  - `Nalezena shoda: <X>%`
-  - `Grid shoda: ...`
-  - atd.
+## 🐛 Vývoj a ladění
+
+### Console log formát:
+```
+🔍 Detekována klávesa I - spouštím analýzu otázky
+Hledám otázku pod kurzorem...
+Otázka: <text otázky>
+Normalizovaná: <text bez diakritiky>
+
+=== Hledám nejlepší shodu v databázi ===
+Porovnávám s otázkou: <db otázka> → 45%
+Porovnávám s otázkou: <db otázka> → 89%
+✅ Nejlepší shoda: 89% (práh: 70%)
+
+DEBUG: IP adresy v odpovědi 1: [[10,0,0,0], [255,0,0,0]]
+DEBUG: IP adresy v odpovědi 2: [[10,0,0,0], [255,0,0,0]]
+DEBUG: Všechny IP adresy se shodují ✓
+DEBUG: Ostatní čísla: [95, 1] vs [95, 1] ✓
+
+Zvýrazněná odpověď: <text>
+Grid buňka zvýrazněna
+```
+
+### Řešení problémů:
+
+**❌ Špatná odpověď se zvýrazní:**
+- Otevřete console (F12) a zkontrolujte percentuální shody
+- Může existovat podobnější otázka v databázi
+- Zvyšte `questionSimilarityThreshold` klávesou **P**
+
+**❌ IP adresy nefungují:**
+- Podporovány: `X.X.X.X` nebo `X.X.X` (automaticky `→ X.X.X.0`)
+- Console ukáže: `DEBUG: IP adresy v odpovědi: [[10,0,0,0]]`
+- Musí být v obou odpovědích na stejných pozicích
+
+**❌ Odpověď se nenajde:**
+- Snižte `similarityThreshold` klávesou **P** (aktuálně 60%)
+- Zkontrolujte, že čísla jsou ve stejném pořadí
+- Diakritika se automaticky normalizuje
 
 ### Úprava kódu:
 1. Upravte soubory v `chrome-extension/`
