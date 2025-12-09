@@ -1,0 +1,5 @@
+{
+  "similarityThreshold": 50,
+  "questionSimilarityThreshold": 70,
+  "showNoMatchIndicator": false
+}

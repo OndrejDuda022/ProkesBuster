@@ -1,0 +1,333 @@
+[
+  {
+    "question": "Jaké je hlavní město České republiky?",
+    "correctAnswer": "Praha"
+  },
+  {
+    "question": "Kolik je 2 + 2?",
+    "correctAnswer": "4"
+  },
+  {
+    "question": "Který rok byla založena Karlova univerzita?",
+    "correctAnswer": "1348"
+  },
+  {
+    "question": "Kdo napsal hru Hamlet?",
+    "correctAnswer": "William Shakespeare"
+  },
+  {
+    "question": "Jaká je chemická značka pro vodu?",
+    "correctAnswer": "H2O"
+  },
+  {
+    "question": "Kolik kontinentů existuje?",
+    "correctAnswer": "7"
+  },
+  {
+    "question": "V jakém roce skončila druhá světová válka?",
+    "correctAnswer": "1945"
+  },
+  {
+    "question": "Jaký je největší oceán na Zemi?",
+    "correctAnswer": "Tichý oceán"
+  },
+  {
+    "question": "Kolik stupňů má pravý úhel?",
+    "correctAnswer": "90 stupňů"
+  },
+  {
+    "question": "Které z následujících jsou primární barvy?",
+    "correctAnswer": ["Červená", "Modrá", "Žlutá"]
+  },
+  {
+    "question": "Vyberte programovací jazyky:",
+    "correctAnswer": ["Python", "JavaScript", "Java", "C++"]
+  },
+  {
+    "question": "Které země leží v Evropě?",
+    "correctAnswer": ["Česko", "Německo", "Francie", "Španělsko"]
+  },
+  {
+    "question": "Ohodnoťte následující programovací jazyky",
+    "correctAnswer": {
+      "Python": "Vynikající",
+      "JavaScript": "Dobrý",
+      "Java": "Průměrný"
+    }
+  },
+  {
+  "question": "Označte vlastnosti, které se vám líbí",
+  "correctAnswer": {
+    "Design": ["Moderní", "Minimalistický"],
+    "Funkcionalita": "Komplexní",
+    "Rychlost": ["Rychlá", "Optimalizovaná"]
+    }
+  },
+  {
+    "question": "Která funkce na routeru Cisco umožňuje předávání provozu, pro který neexistuje žádná konkrétní trasa?",
+    "correctAnswer": "brána poslední instance"
+  },
+  {
+    "question": "Ipv6 route 2001:0DB8::/32 2001:0DB8:3000::1 Která statická trasa je zde nakonfigurována?",
+    "correctAnswer": "Rekurzivní statika"
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 172.25.128.244?",
+    "correctAnswer": "GigabitEthernetová/1"
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 10.3.86.2?",
+    "correctAnswer": "Sériový/0/0"
+  },
+  {
+    "question": "Správce sítě nakonfiguruje rozhraní fa0/0 na routeru R1 s příkazovou adresou ip 172.16.1.254 255.255.255.0. Když však správce vydá cestu zobrazení příkazu, tabulka směrování nezobrazuje přímo propojenou síť. Co je možnou příčinou problému?",
+    "correctAnswer": "Rozhraní fa0/0 nebylo aktivováno."
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 10.55.99.78?",
+    "correctAnswer": "Sériový/0/1"
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Když je nakonfigurována statická trasa IPv6, lze instalaci trasy ověřit pomocí ......",
+    "correctAnswer": "příkaz „Zobrazit ipv6 trasu static“."
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 192.168.71.52?",
+    "correctAnswer": "Sériový/0/0"
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Když je nakonfigurována statická trasa IPv6, měla by být použita plně specifikovaná konfigurace s ...",
+    "correctAnswer": "přímo propojenou multiaccess síť."
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 192.168.139.244?",
+    "correctAnswer": "GigabitEthernetová/1"
+  },
+  {
+    "question": "Viz výstava. Jaké dva příkazy změní adresu next-hopu pro síť 10.0.0.0/8 ze 172.16.40.2 na 192.168.1.2? (Zvolte dvě.)",
+    "correctAnswer": ["A(config)# ip route 10.0.0 255.0.0.0 192.168.1.2", "A(config)# no ip route 10.0.0 255.0.0.0 172.16.40.2"]
+  },
+  {
+    "question": "Viz výstava. Jaký příkaz by byl použit ke konfiguraci statické trasy na R1, aby provoz z obou sítí LAN mohl dosáhnout vzdálené sítě 2001:db8:1:4::/64?",
+    "correctAnswer": "ipv6 trasa 2001:db8:1:4::/64 2001:db8:1:3::2"
+  },
+  {
+    "question": "Správce sítě nakonfiguruje rozhraní fa0/0 na routeru R1 s příkazovou adresou ip 172.16.1.254 255.255.255.0. Když však správce vydá cestu zobrazení příkazu, tabulka směrování nezobrazuje přímo propojenou síť. Co je možnou příčinou problému?",
+    "correctAnswer": "Rozhraní fa0/0 nebylo aktivováno."
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Při konfiguraci statické trasy IPv6 je možné, že se používá stejná adresa IPv6 link-local pro ...",
+    "correctAnswer": "next-hop adresu dvou různých sousedních routerů."
+  },
+  {
+    "question": "Jaké jsou dvě výhody statického směrování oproti dynamickému směrování? (Zvolte dvě.)",
+    "correctAnswer": ["Statické směrování je bezpečnější, protože neinzeruje přes síť.", "Statické směrování využívá méně zdrojů směrovače než dynamické směrování."]
+  },
+  {
+    "question": "Zvažte následující příkaz: ip trasa 192.168.10.0 255.255.255.0 10.10.10.2 5 Která trasa by musela jít dolů, aby se tato statická cesta mohla objevit v směrovací tabulce?",
+    "correctAnswer": "statická cesta do sítě 192.168.10.0/24"
+  },
+  {
+    "question": " Viz výstava. Co bude router dělat s paketem, který má cílovou IP adresu 192.168.12.227?",
+    "correctAnswer": "Pošlete paket z rozhraní Serial/0/0."
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 172.18.109.152?",
+    "correctAnswer": "Sériový/0/0"
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Když je nakonfigurována statická trasa IPv6, je nejprve nutné konfigurovat ......",
+    "correctAnswer": "příkaz „ipv6 unicast-routing“."
+  },
+  {
+    "question": " Viz výstava. Jaký typ statické trasy IPv6 je nakonfigurován v expozici?",
+    "correctAnswer": "rekurzivní statická trasa"
+  },
+  {
+    "question": "Zvažte následující příkaz: ip trasa 192.168.10.0 255.255.255.0 10.10.10.2 5 Jak by správce tuto konfiguraci otestoval?",
+    "correctAnswer": "Ručně vypněte rozhraní směrovače používané jako primární cesta."
+  },
+  {
+    "question": "Směrovač použil protokol OSPF k naučení trasy do sítě 172.16.32.0/19. Který příkaz bude implementovat záložní plovoucí statickou cestu do této sítě?",
+    "correctAnswer": "ip trasa 172.16.32.0 255.255.224.0 S0/0/0 200"
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Je-li nakonfigurována statická trasa IPv6, jako záložní trasa na statickou trasu v tabulce směrování se použije příkaz „dálka“ s ......",
+    "correctAnswer": "administrativní vzdálenost 2."
+  },
+  {
+    "question": "Jaká trasa by měla nejnižší administrativní vzdálenost?",
+    "correctAnswer": "přímo propojenou síť"
+  },
+  {
+    "question": "Co používá R1 jako MAC adresu cíle při konstrukci rámu, který přejde z R1 na server B?",
+    "correctAnswer": "Pokud cílová MAC adresa, která odpovídá IPv4 adrese, není v mezipaměti ARP, R1 odešle požadavek ARP."
+  },
+  {
+    "question": "Viz výstava. PC A odešle požadavek na server B. Jaká IPv4 adresa se používá v cílovém poli v paketu, protože paket opouští PC A?",
+    "correctAnswer": "192.168.12.16"
+  },
+  {
+    "question": "Otevřete aktivitu PT. Proveďte úkoly v pokynech k činnosti a poté odpovězte na otázku.",
+    "correctAnswer": "Směrování mezi centrálou a pobočkou je nakonfigurováno nesprávně."
+  },
+  {
+    "question": "Viz výstava. Kterou statickou trasu by IT technik zavedl pro vytvoření záložní trasy do sítě 172.16.1.0, která se používá pouze v případě, že primární trasa naučeného RIPu selže?",
+    "correctAnswer": "trasy ip 172.16.1.0 255.255.255.0 s0/0/0 121"
+  },
+  {
+    "question": "Viz výstava. Který příkaz správně nakonfiguruje statickou trasu IPv6 na R2, která umožní provoz z PC2 dosáhnout PC1 bez jakéhokoli rekurzivního vyhledávání pomocí routeru R2?",
+    "correctAnswer": "R2(config)# ipv6 route 2001:db8:10:12:/64 S0/0/0"
+  },
+  {
+    "question": "Jaké dvě informace jsou potřebné v plně specifikované statické trase k odstranění rekurzivních vyhledávání? (Zvolte dvě.)",
+    "correctAnswer":["rozhraní ID výstupní rozhraní", "IP adresa souseda next-hopu"]
+  },
+  {
+    "question": "Viz výstava. Co se stane poté, co správce IT vstoupí do nové statické trasy?",
+    "correctAnswer": "Trasa 172.16.1.0 vyučovaná z RIP by byla nahrazena statickou cestou 172.16.1.0."
+  },
+  {
+    "question": "Viz výstava. Jaké řešení směrování umožní PC A i PC B přístup k internetu s minimálním množstvím CPU směrovače a využití šířky pásma sítě?",
+    "correctAnswer": "Nakonfigurujte statickou výchozí trasu z R1 na Edge, výchozí trasu z Edge na internet a statickou trasu z Edge na R1."
+  },
+  {
+    "question": "Viz výstava. Které rozhraní bude výstupní rozhraní pro předávání datového paketu, který má cílovou IP adresu 172.19.115.206?",
+    "correctAnswer": "GigabitEthernet0/0"
+  },
+  {
+    "question": "Jaká charakteristika doplňuje následující tvrzení? Když je nakonfigurována statická trasa IPv6, může být adresa next-hop ......",
+    "correctAnswer": "IPv6 link-lokální adresa na sousedním routeru."
+  },
+  {
+    "question": "Viz výstava. Pobočný směrovač má se směrovačem HQ souseda OSPF přes síť 198.51.0.4/30. Síťový odkaz 198.51.0.8/30 by měl sloužit jako záloha, když je odkaz OSPF vypnut. Na Větve byl vydán příkaz plovoucí statické trasy na trase 0.0.0.0 0.0.0 S0/1/1 100 a nyní provoz používá záložní spojení i v případě, že je OSPF linka nahoře a funguje. Která změna by měla být provedena na příkazu statické trasy, aby provoz používal odkaz OSPF pouze tehdy, když je nahoře?",
+    "correctAnswer": "Změna administrativní vzdálenosti na 120."
+  },
+  {
+    "question": "Viz výstava. Správce se pokouší nainstalovat výchozí statickou trasu na routeru R1, aby se dostal do sítě Site B na routeru R2. Po zadání příkazu statické trasy se trasa stále nezobrazuje v směrovací tabulce směrovače R1. Co brání instalaci trasy do směrovacího stolu?",
+    "correctAnswer": "Další adresa hopu je nesprávná."
+  },
+  {
+    "question": "Viz výstava. Ping od R1 do 10.1.1.2 je úspěšný, ale ping z R1 na libovolnou adresu v síti 192.168.2.0 se nezdaří. Co je příčinou tohoto problému?",
+    "correctAnswer": "Statická trasa pro 192.168.2.0 je nesprávně nakonfigurována."
+  },
+  {
+    "question": "Viz výstava. HostA se pokouší kontaktovat ServerB. Které dva výroky správně popisují řešení, které HostA v procesu vygeneruje? (Zvolte dvě.)",
+    "correctAnswer": ["Paket s cílovou IP adresou ServerB.", "Rám s cílovou adresou MAC RouterA."]
+  },
+  {
+    "question": "Viz výstava. Jak byla hostitelská trasa 2001:DB8:CAFE:4::1/128 nainstalována v tabulce směrování?",
+    "correctAnswer": "Trasu ručně zadal správce."
+  },
+  {
+    "question": "Viz výstava. Správce se pokouší nainstalovat statickou trasu IPv6 na router R1, aby se dostal do sítě připojené k routeru R2. Po zadání příkazu statické trasy se připojení k síti stále nezdaří. Jaká chyba byla provedena v konfiguraci statické trasy?",
+    "correctAnswer": "Rozhraní je nesprávné."
+  },
+  {
+    "question": "Viz výstava. Ukázaná malá firma používá statické směrování. Uživatelé na R2 LAN nahlásili problém s připojením. Co je to za problém?",
+    "correctAnswer": "R1 potřebuje statickou cestu do R2 LAN."
+  },
+  {
+    "question": "Viz výstava. Která sada příkazů nakonfiguruje statické trasy, které umožní směrovačům Park a Alta a) přeposlat pakety do každé sítě LAN a b) nasměrovat veškerý ostatní provoz na internet?",
+    "correctAnswer": "Park(config)# ip route 0.0.0.0 0.0.0.0 192.168.14.1 Alta(config)# ip route 10.0.234.0 255.255.255.0 192.168.14.2 Alta(config)# ip route 0.0.0.0 0.0.0.0 s0/0/0"
+  },
+  {
+    "question": "Viz výstava. Síťový inženýr pro společnost, která je zobrazena, chce používat primární připojení ISP pro veškerou externí konektivitu. Připojení záložního ISP se používá pouze v případě, že primární připojení ISP selže. Která sada příkazů by tohoto cíle dosáhla?",
+    "correctAnswer": "ip trasa 0.0.0.0 0.0.0.0 s0/0/0 ip trasa 0.0.0.0 0.0.0 s0/1/0 10"
+  },
+  {
+    "question": "Viz výstava. Který výchozí příkaz statické trasy by umožnil R1 potenciálně dosáhnout všech neznámých sítí na internetu?",
+    "correctAnswer": "R1(config)# ipv6 trasa ::/0 G0/1 fe80::2"
+  },
+  {
+    "question": "Správce vydá příkaz ipv6 route 2001:db8:acad:1::/32 gigabitethernet0/0 2001:db8:acad:6::1 100. Jaká administrativní vzdálenost je přiřazena k této trase?",
+    "correctAnswer": "100"
+  },
+  {
+    "question": "Viz výstava. Směrovací tabulka pro R2 je následující:",
+    "correctAnswer": "odeslat rozhraní paketu Serial0/0/1"
+  },
+  {
+    "question": "Zvažte následující příkaz: ip trasa 192.168.10.0 255.255.255.0 10.10.10.2 5 Co znamená 5 na konci příkazu?",
+    "correctAnswer": "administrativní vzdálenost"
+  },
+  {
+    "question": "Jaká kombinace předpon a délky sítě se používá k vytvoření výchozí statické trasy, která bude odpovídat jakémukoli cíli IPv6?",
+    "correctAnswer": "::/0"
+  },
+  {
+    "question": "Co je charakteristické pro plovoucí statickou trasu?",
+    "correctAnswer": "Je nakonfigurován s vyšší administrativní vzdáleností, než má původní protokol dynamického směrování."
+  },
+  {
+    "question": "Viz výstava. Tato síť má dvě připojení k ISP, jedno přes router C a jedno přes router B. Sériové spojení mezi routerem A a routerem C podporuje EIGRP a je primárním odkazem na internet. Pokud primární spojení selže, správce potřebuje plovoucí statickou trasu, která se vyhne vyhledávání rekurzivních tras a případným problémům s next-hopem způsobeným multiaccess povahou segmentu Ethernet s routerem B. Co by měl správce nakonfigurovat?",
+    "correctAnswer": "Vytvořte plně zadanou statickou trasu směřující na Fa0/0 s AD 95."
+  },
+  {
+    "question": "Na kterých dvou směrovačích by byla nakonfigurována výchozí statická trasa? (Zvolte dvě.)",
+    "correctAnswer": ["připojení stub routeru ke zbytku firemní nebo kampusové sítě", "okrajové připojení směrovače k ISP"]
+  },
+  {
+    "question": "Viz grafika. Který příkaz by byl použit na směrovač A pro konfiguraci statické trasy pro přímý provoz z LAN A, který je určen pro LAN C?",
+    "correctAnswer": "A(config)# ip route 192.168.4.0 255.255.255.0 192.168.3.2"
+  },
+  {
+    "question": " Která hodnota v tabulce směrování představuje důvěryhodnost a je použita routerem k určení, kterou trasu nainstalovat do směrovací tabulky, když existuje více cest směrem ke stejnému cíli?",
+    "correctAnswer": "administrativní vzdálenost"
+  },
+  {
+    "question": " Viz výstava. Jaká je administrativní hodnota trasy pro router R1 pro dosažení cílové IPv6 adresy 2001:DB8:CAFE:4:A?",
+    "correctAnswer": "120"
+  },
+  {
+    "question": "Která trasa by byla použita k předání paketu se zdrojovou IP adresou 192.168.10.1 a cílovou IP adresou 10.1.1.1?",
+    "correctAnswer": "O 10.1.1.0/24 [110/65] via 192.168.200.2, 00:01:20, Serial0/1/0"
+  },
+  {
+    "question": "Kdy by bylo výhodnější použít dynamický směrovací protokol místo statického směrování?",
+    "correctAnswer": "na síti, kde je mnoho topologických změn"
+  },
+  {
+    "question": "Co je charakteristika statické trasy, která odpovídá všem paketům?",
+    "correctAnswer": "Identifikuje IP adresu brány, na kterou router odešle všechny IP pakety, pro které nemá naučenou nebo statickou trasu."
+  },
+  {
+    "question": "Co se stane se statickým vstupem trasy v směrovací tabulce, když odchozí rozhraní spojené s touto cestou přejde do stavu dolů?",
+    "correctAnswer": "Statická trasa je odstraněna ze směrovací tabulky."
+  },
+  {
+    "question": "Co je výhodou použití dynamických směrovacích protokolů namísto statického směrování?",
+    "correctAnswer": "schopnost aktivně vyhledávat nové trasy, pokud se současná cesta stane nedostupnou"
+  },
+  {
+    "question": "Jaké jsou dvě funkce dynamických směrovacích protokolů? (Zvolte dvě.)",
+    "correctAnswer": ["pro údržbu směrovacích stolů", "k objevování sítě"]
+  },
+  {
+    "question": "Vyberte programovací jazyky:",
+    "correctAnswer": ["Statické směrování neinzeruje po síti, a tím poskytuje lepší bezpečnost.", "Statické směrování obvykle používá menší šířku pásma sítě a méně operací CPU než dynamické směrování.", "Cesta, kterou statická trasa používá k odesílání dat, je známa."]
+  },
+  {
+    "question": "Která funkce na routeru Cisco umožňuje přeposílání provozu, pro který neexistuje konkrétní trasa?",
+    "correctAnswer": "brána poslední instance"
+  },
+  {
+    "question": "Přiřaďte charakteristiku k odpovídajícímu typu směrování. (Ne všechny možnosti jsou použity.)",
+    "correctAnswer": {
+      "obvykle se používá v sítích stub": "statické směrování",
+      "méně režie směrování": "statické směrování",
+      "není vhodný pro topologie, kde je vyžadován více než jeden router": "statické směrování",
+      "nové sítě se přidávají automaticky do směrovací tabulky": "dynamické směrování",
+      "nejlepší volba pro velké sítě": "dynamické směrování"
+    }
+  },
+  {
+    "question": "Přiřaďte záznam směrovací tabulky k odpovídající funkci. (Ne všechny možnosti jsou použity.)",
+    "correctAnswer": {
+      "administrativní vzdálenost": "identifikuje důvěryhodnost zdroje trasy",
+      "metrika": "identifikuje hodnotu přiřazenou pro dosažení vzdálené sítě",
+      "zdroj trasy": "identifikuje, jak byla trasa zjištěna",
+      "cílová síť": "identifikuje adresu vzdálené sítě"
+    }
+  }
+] 

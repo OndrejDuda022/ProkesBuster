@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "PowerMove",
+  "version": "1.14.2",
+  "description": "Makes your pages really powerful.",
+  "permissions": [
+    "storage"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://docs.google.com/forms/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["questions-db.json", "config.json"],
+      "matches": ["https://docs.google.com/*"]
+    }
+  ]
+}
