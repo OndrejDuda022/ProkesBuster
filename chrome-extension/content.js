@@ -8,6 +8,7 @@ let config = {
 let isActive = false;
 let lastMouseX = window.innerWidth / 2;
 let lastMouseY = window.innerHeight / 2;
+let settingsPanelVisible = false;
 
 // Sledování pozice myši
 document.addEventListener('mousemove', (event) => {
@@ -904,9 +905,81 @@ function handleKeyPress(event) {
     event.preventDefault();
     clearAllHighlights();
   }
+  
+  // Klávesa P pro zobrazení/skrytí nastavení
+  if (event.key === 'p' || event.key === 'P') {
+    // Pouze pokud není focus v input poli
+    if (document.activeElement.tagName === 'INPUT' || 
+        document.activeElement.tagName === 'TEXTAREA' ||
+        document.activeElement.isContentEditable) {
+      return;
+    }
+    
+    event.preventDefault();
+    toggleSettingsPanel();
+  }
 }
 
 // Inicializace
+// Vytvoření nastavovacího panelu
+function createSettingsPanel() {
+  const panel = document.createElement('div');
+  panel.id = 'auto-fill-settings-panel';
+  panel.innerHTML = `
+    <div class="settings-title">Prahy podobnosti</div>
+    <div class="settings-row">
+      <span class="settings-label">Otázky:</span>
+      <input type="number" id="question-threshold" class="settings-input" min="0" max="100" value="${config.questionSimilarityThreshold}">
+      <span>%</span>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Odpovědi:</span>
+      <input type="number" id="answer-threshold" class="settings-input" min="0" max="100" value="${config.similarityThreshold}">
+      <span>%</span>
+    </div>
+    <div class="settings-hint">Stiskněte P pro skrytí</div>
+  `;
+  document.body.appendChild(panel);
+  
+  // Event listenery pro změnu hodnot
+  document.getElementById('question-threshold').addEventListener('input', (e) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      config.questionSimilarityThreshold = value;
+      console.log(`📊 Práh pro otázky změněn na ${value}%`);
+    }
+  });
+  
+  document.getElementById('answer-threshold').addEventListener('input', (e) => {
+    const value = parseInt(e.target.value);
+    if (!isNaN(value) && value >= 0 && value <= 100) {
+      config.similarityThreshold = value;
+      console.log(`📊 Práh pro odpovědi změněn na ${value}%`);
+    }
+  });
+}
+
+// Zobrazení/skrytí nastavovacího panelu
+function toggleSettingsPanel() {
+  const panel = document.getElementById('auto-fill-settings-panel');
+  if (!panel) {
+    createSettingsPanel();
+    settingsPanelVisible = true;
+    document.getElementById('auto-fill-settings-panel').classList.add('visible');
+    console.log('⚙️ Panel nastavení zobrazen');
+  } else {
+    settingsPanelVisible = !settingsPanelVisible;
+    panel.classList.toggle('visible', settingsPanelVisible);
+    console.log(`⚙️ Panel nastavení ${settingsPanelVisible ? 'zobrazen' : 'skryt'}`);
+    
+    // Aktualizovat hodnoty v inputech
+    if (settingsPanelVisible) {
+      document.getElementById('question-threshold').value = config.questionSimilarityThreshold;
+      document.getElementById('answer-threshold').value = config.similarityThreshold;
+    }
+  }
+}
+
 async function init() {
   console.log('Google Forms Auto-fill Extension aktivováno');
   await loadConfig();

@@ -1,5 +1,5 @@
 {
-  "similarityThreshold": 70,
-  "questionSimilarityThreshold": 60,
+  "similarityThreshold": 60,
+  "questionSimilarityThreshold": 70,
   "showNoMatchIndicator": true
 }
