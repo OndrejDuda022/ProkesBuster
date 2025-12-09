@@ -93,7 +93,7 @@ Otevřete `questions-db.json` a přidejte nový objekt do pole s otázkou a spr�
 4. **Porovnání odpovědí**: 
    - Čísla musí být **přesně stejná**
    - Slova se porovnávají s tolerancí
-5. **Dočasné ztučnění**: Nejlepší odpověď se ztuční na 3 sekundy
+5. **Dočasné ztučnění**: Nejlepší odpověď se ztuční na 1 sekundu
 
 ## Technické detaily
 
@@ -101,17 +101,6 @@ Otevřete `questions-db.json` a přidejte nový objekt do pole s otázkou a spr�
 - **Content Script**: Běží přímo na stránce Google Forms
 - **Levenshteinova vzdálenost**: Pro výpočet podobnosti textů
 - **Regex extrakce**: Pro identifikaci čísel v textu
-
-## Struktura souborů
-
-\`\`\`
-chrome-extension/
-├── manifest.json          # Konfigurace rozšíření
-├── content.js            # Hlavní logika rozšíření
-├── styles.css            # Styly pro zvýraznění
-├── questions-db.json     # Databáze otázek a odpovědí
-└── README.md            # Tato dokumentace
-\`\`\`
 
 ## Poznámky
 
