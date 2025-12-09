@@ -1,113 +1,157 @@
-# Google Forms Auto-fill Extension
+# ProkesBuster - Google Forms Auto-fill Extension
 
 Chrome rozšíření pro automatické vyplňování Google formulářů s inteligentním porovnáváním otázek a odpovědí.
 
 ## Funkce
 
-- **Automatická detekce otázek**: Při stisku klávesy I rozšíření nasnímá aktuální otázku
-- **Inteligentní porovnání**: Porovnává text otázky s databází s nastavitelným prahem podobnosti
+- **Detekce pod kurzorem**: Při stisku klávesy **I** rozšíření analyzuje otázku pod kurzorem myši
+- **Inteligentní porovnání**: Porovnává text otázky s databází (threshold 80%)
 - **Normalizace textu**: Odstraňuje diakritiku a interpunkci pro lepší rozpoznávání
 - **Přesná čísla**: Čísla v odpovědích musí být přesně stejná
-- **Podobnost slov**: Slova se porovnávají s tolerancí
-- **Dočasné ztučnění**: Nejlepší odpověď se ztuční na 3 sekundy
+- **Podobnost slov**: Slova se porovnávají s tolerancí pomocí Levenshteinovy vzdálenosti
 - **Podpora více typů otázek**:
-  - Radio buttons (jedna správná odpověď)
-  - Checkboxes (více správných odpovědí)
-  - Rozbalovací nabídka (dropdown)
-  - Mřížkové otázky (grid) s více řádky a sloupci
-- **No-match indikátor**: Malý červený vykřičník uprostřed dole při nenalezení shody
-- **Konfigurovatelný práh**: Nastavitelné procento podobnosti v config.json
+  - **Radio buttons** (jedna správná odpověď) - tučné písmo
+  - **Checkboxes** (více správných odpovědí) - tučné písmo
+  - **Rozbalovací nabídka** (dropdown) - tučné písmo
+  - **Mřížkové otázky** (grid) - černé ohraničení 1px
+    - Radio buttony (1 odpověď na řádek)
+    - Checkboxy (více odpovědí na řádek)
+- **No-match indikátor**: Malý červený vykřičník (20px) uprostřed dole při nenalezení shody (konfigurovatelné)
+- **Automatické zmizení**: Všechna zvýraznění zmizí po 1 sekundě
+- **Ruční zrušení**: Klávesa **O** okamžitě zruší všechna zvýraznění
+- **Konfigurovatelný práh**: Nastavitelné procento podobnosti v `config.json`
 
 ## Instalace
 
 1. Otevřete Chrome a přejděte na `chrome://extensions/`
-2. Zapněte "Režim pro vývojáře" (Developer mode) v pravém horním rohu
-3. Klikněte na "Načíst rozbalené rozšíření" (Load unpacked)
-4. Vyberte složku `chrome-extension`
+2. Zapněte **"Režim pro vývojáře"** (Developer mode) v pravém horním rohu
+3. Klikněte na **"Načíst rozbalené rozšíření"** (Load unpacked)
+4. Vyberte složku `chrome-extension` z tohoto projektu
 
 ## Použití
 
+### Základní workflow:
 1. Otevřete Google formulář (https://docs.google.com/forms/)
-2. Najeďte myší na otázku
-3. Stiskněte **klávesu I** pro analýzu a ztučnění správné odpovědi
-4. Stiskněte **klávesu O** pro okamžité zrušení všech ztučnění
+2. **Najeďte myší na otázku**, kterou chcete zkontrolovat
+3. Stiskněte **klávesu I** - rozšíření:
+   - Detekuje otázku pod kurzorem
+   - Najde shodu v databázi (pokud existuje s ≥80% podobností)
+   - Zvýrazní správnou odpověď/odpovědi
+4. (Volitelně) Stiskněte **klávesu O** pro okamžité zrušení zvýraznění
+
+> **Poznámka:** Klávesy se deaktivují ve vstupních polích (input/textarea)
 
 ## Konfigurace
 
-Rozšíření používá konfigurační soubor `config.json` pro nastavení chování:
+Rozšíření používá konfigurační soubor `chrome-extension/config.json`:
 
 ```json
 {
-  "similarityThreshold": 90,
+  "similarityThreshold": 80,
   "showNoMatchIndicator": true
 }
 ```
 
-- **similarityThreshold**: Minimální procentuální shoda pro považování otázky za match (výchozí: 80)
-- **showNoMatchIndicator**: Zobrazit červený vykřičník, když není nalezena shoda (výchozí: true)
+### Parametry:
+- **similarityThreshold** (výchozí: 80)
+  - Minimální procentuální shoda pro otázky
+  - Rozsah: 0-100
+  - Nižší hodnota = více false positives
+  - Vyšší hodnota = více false negatives
+
+- **questionSimilarityTreshold** (to samé pro odpovědi)
+  
+- **showNoMatchIndicator** (výchozí: true)
+  - Zobrazit červený vykřičník při nenalezení shody
+  - `true` = zobrazit, `false` = skrýt
 
 ## Databáze otázek
 
-Otázky a správné odpovědi jsou uloženy v souboru `questions-db.json`. 
+Otázky a správné odpovědi jsou uloženy v `chrome-extension/questions-db.json`.
 
-### Formát:
+### Podporované formáty:
 
-**Jedna správná odpověď:**
+#### 1. Jedna správná odpověď (radio button):
 ```json
 {
-  "question": "Text otázky",
-  "correctAnswer": "Správná odpověď"
+  "question": "Jaké je hlavní město České republiky?",
+  "correctAnswer": "Praha"
 }
 ```
 
-**Více správných odpovědí (pro checkboxy):**
+#### 2. Více správných odpovědí (checkboxy):
 ```json
 {
-  "question": "Text otázky s více odpověďmi",
-  "correctAnswer": ["Odpověď 1", "Odpověď 2", "Odpověď 3"]
+  "question": "Které země leží v Evropě?",
+  "correctAnswer": ["Česko", "Německo", "Francie", "Španělsko"]
 }
 ```
 
-**Mřížkové otázky (grid):**
+#### 3. Mřížkové otázky - jedna odpověď na řádek (radio grid):
 ```json
 {
-  "question": "Ohodnoťte následující položky",
+  "question": "Ohodnoťte následující programovací jazyky",
   "correctAnswer": {
-    "Řádek 1": "Sloupec A",
-    "Řádek 2": "Sloupec B",
-    "Řádek 3": "Sloupec C"
+    "Python": "Vynikající",
+    "JavaScript": "Dobrý",
+    "Java": "Průměrný"
+  }
+}
+```
+
+#### 4. Mřížkové otázky - více odpovědí na řádek (checkbox grid):
+```json
+{
+  "question": "Označte vlastnosti, které se vám líbí",
+  "correctAnswer": {
+    "Design": ["Moderní", "Minimalistický"],
+    "Funkcionalita": "Komplexní",
+    "Rychlost": ["Rychlá", "Optimalizovaná"]
   }
 }
 ```
 
 ### Přidání nových otázek:
-
-Otevřete `questions-db.json` a přidejte nový objekt do pole s otázkou a správnou odpovědí (nebo více odpověďmi v poli).
-
-## Jak to funguje
-
-1. **Načtení databáze**: Při načtení stránky se načte databáze otázek
-2. **Detekce otázky**: Po stisku I se najde nejbližší otázka
-3. **Porovnání textu**: Text otázky se porovná s databází pomocí Levenshteinovy vzdálenosti
-4. **Práh shody**: Pokud je shoda alespoň 80%, pokračuje se k odpovědím
-4. **Porovnání odpovědí**: 
-   - Čísla musí být **přesně stejná**
-   - Slova se porovnávají s tolerancí
-5. **Dočasné ztučnění**: Nejlepší odpověď se ztuční na 1 sekundu
+1. Otevřete `chrome-extension/questions-db.json`
+2. Přidejte nový objekt do JSON pole
+3. Uložte soubor
+4. Obnovte stránku Google Forms (F5)
 
 ## Technické detaily
 
-- **Manifest V3**: Používá nejnovější verzi Chrome rozšíření
+- **Manifest V3**: Nejnovější verze Chrome Extensions API
 - **Content Script**: Běží přímo na stránce Google Forms
-- **Levenshteinova vzdálenost**: Pro výpočet podobnosti textů
-- **Regex extrakce**: Pro identifikaci čísel v textu
+- **Injekce**: `chrome-extension/content.js` se načte na `docs.google.com/forms/*`
+- **Algoritmus**: Levenshteinova vzdálenost pro fuzzy text matching
+- **DOM Selektory**: Používá ARIA role attributes (`role="radio"`, `role="heading"`, atd.)
+- **Text normalizace**: Unicode NFD normalizace + regex cleanup
+- **Mouse tracking**: Global `mousemove` listener ukládá `lastMouseX`/`lastMouseY`
+## Struktura projektu
 
-## Poznámky
+```
+ProkesBuster/
+├── chrome-extension/
+│   ├── manifest.json       # Chrome extension config (Manifest V3)
+│   ├── content.js          # Hlavní logika (~780 řádků)
+│   ├── styles.css          # CSS styly pro zvýraznění
+│   ├── config.json         # Konfigurace (threshold, indicators)
+│   └── questions-db.json   # Databáze otázek a odpovědí
+└── README.md               # Tato dokumentace
+```
 
-- Rozšíření funguje pouze na stránkách `https://docs.google.com/forms/*`
-- Pro produkční použití je potřeba přidat ikony (icon16.png, icon48.png, icon128.png)
-- Databázi otázek můžete rozšířit podle svých potřeb
-- Práh podobnosti lze upravit v `config.json` (výchozí: 80%)
-- Červený vykřičník se zobrazí na 3 sekundy při nenalezení shody (uprostřed dole)
-- Ztučnění odpovědi automaticky zmizí po 3 sekundách
-- Klávesy I a O nefungují ve vstupních polích (input/textarea)
+## Vývoj a ladění
+
+### Debug mode:
+- Otevřete DevTools (F12) → Console
+- Všechny operace logují do konzole:
+  - `Hledám otázku pod kurzorem...`
+  - `Otázka: <text>`
+  - `Nalezena shoda: <X>%`
+  - `Grid shoda: ...`
+  - atd.
+
+### Úprava kódu:
+1. Upravte soubory v `chrome-extension/`
+2. Přejděte na `chrome://extensions/`
+3. Klikněte na **⟳ Obnovit** (Reload) u rozšíření
+4. Obnovte stránku Google Forms (F5)
